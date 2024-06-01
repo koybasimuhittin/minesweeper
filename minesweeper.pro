@@ -3,13 +3,13 @@ QT += core gui widgets
 SOURCES += \
     MineButton.cpp \
     MyGrid.cpp \
-    MyTimer.cpp \
+    ScoreCounter.cpp \
     main.cpp
 
 HEADERS += \
     minebutton.h \
     mygrid.h \
-    myscore.h
+    scorecounter.h
 
 RESOURCES += \
     assets.qrc

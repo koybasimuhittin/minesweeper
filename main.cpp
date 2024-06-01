@@ -2,9 +2,11 @@
 #include <QHBoxLayout>
 #include <QSpacerItem>
 #include <QVBoxLayout>
+#include <QLabel>
+
 #include "minebutton.h"
 #include "mygrid.h"
-#include "myscore.h"
+#include "scorecounter.h"
 
 const int ROW_COUNT = 20;
 const int COLUMN_COUNT = 20;
@@ -16,12 +18,23 @@ int main(int argc, char *argv[])
     QVBoxLayout *vb = new QVBoxLayout(cw);
     vb->setAlignment(Qt::AlignCenter); // Center the vertical layout
 
-    MyTimer mt;
+    ScoreCounter* counter = new ScoreCounter();
+    QLabel *scoreLabel = new QLabel("Score : 0");
+    QPushButton *increaseButton = new QPushButton("Increase Score");
+    QPushButton *decreaseButton = new QPushButton("Decrease Score");
 
-    MyGrid *gl = new MyGrid(mt.timer);
+    vb->addWidget(scoreLabel);
+    vb->addWidget(increaseButton);
+    vb->addWidget(decreaseButton);
+
+    MyGrid *gl = new MyGrid();
     gl->setAlignment(Qt::AlignCenter); // Center the grid layout within the horizontal layout
     gl->setHorizontalSpacing(0);
 
+    QObject::connect(increaseButton, &QPushButton::clicked, counter, &ScoreCounter::increaseScore);
+    QObject::connect(counter, &ScoreCounter::scoreChanged, [=](int newScore){
+        scoreLabel->setText(QString("Score: %1").arg(newScore));
+    });
     for (int row = 0; row < ROW_COUNT; row++) {
         for (int col = 0; col < COLUMN_COUNT; col++) {
 
@@ -32,8 +45,6 @@ int main(int argc, char *argv[])
             gl->addWidget(randButton, row, col);
         }
     }
-
-    vb->addWidget(mt.label);
     vb->addLayout(gl); // Add the horizontal layout (containing the grid) to the vertical layout
 
     cw->setWindowTitle("MineSweeper");

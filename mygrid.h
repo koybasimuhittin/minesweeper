@@ -10,7 +10,7 @@ class MyGrid : public QGridLayout
     Q_OBJECT
 
 public:
-    MyGrid(QTimer *timer);
+    MyGrid();
     QTimer *timer;
 
 public slots:

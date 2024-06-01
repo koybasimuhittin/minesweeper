@@ -1,10 +1,10 @@
 #include "mygrid.h"
 #include "minebutton.h"
 
-MyGrid::MyGrid(QTimer *timer)
+MyGrid::MyGrid()
     : QGridLayout()
 {
-    this->timer = timer;
+
 }
 
 // void MyGrid::check_colors()
