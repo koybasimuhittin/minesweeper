@@ -9,7 +9,7 @@ SOURCES += \
 HEADERS += \
     minebutton.h \
     mygrid.h \
-    mytimer.h
+    myscore.h
 
 RESOURCES += \
     assets.qrc

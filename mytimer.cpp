@@ -17,8 +17,7 @@ void MyTimer::MyTimerSlot()
     counter += 1;
     label->setText("Time (secs): " + QString::number(this->counter));
 
-    if (counter >= 100)
-    {
+    if (counter >= 100) {
         this->timer->stop();
         QMessageBox msgBox;
         msgBox.setText("You failed!");

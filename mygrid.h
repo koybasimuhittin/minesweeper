@@ -10,11 +10,11 @@ class MyGrid : public QGridLayout
     Q_OBJECT
 
 public:
-    MyGrid(QTimer* timer);
-    QTimer* timer;
+    MyGrid(QTimer *timer);
+    QTimer *timer;
 
 public slots:
-              // void check_colors();
+    // void check_colors();
 };
 
 #endif // MYGRID_H

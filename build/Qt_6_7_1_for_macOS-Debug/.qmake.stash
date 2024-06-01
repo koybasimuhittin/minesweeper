@@ -43,3 +43,6 @@ QMAKE_CXX.LIBDIRS = \
 QMAKE_MAC_SDK.macosx.SDKVersion = 14.4
 QMAKE_MAC_SDK.macosx.Path = /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
 QMAKE_XCODE_DEVELOPER_PATH = /Library/Developer/CommandLineTools
+QMAKE_MAC_SDK.macosx.PlatformPath = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform
+QMAKE_MAC_SDK.macx-clang.macosx.QMAKE_ACTOOL = /Applications/Xcode.app/Contents/Developer/usr/bin/actool
+QMAKE_XCODE_VERSION = 15.4

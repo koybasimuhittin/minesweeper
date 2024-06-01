@@ -1,10 +1,10 @@
 #include <QApplication>
-#include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QSpacerItem>
+#include <QVBoxLayout>
 #include "minebutton.h"
-#include "mytimer.h"
 #include "mygrid.h"
+#include "myscore.h"
 
 const int ROW_COUNT = 20;
 const int COLUMN_COUNT = 20;
@@ -22,11 +22,13 @@ int main(int argc, char *argv[])
     gl->setAlignment(Qt::AlignCenter); // Center the grid layout within the horizontal layout
     gl->setHorizontalSpacing(0);
 
-    for (int row = 0; row < ROW_COUNT; row++)
-    {
-        for (int col = 0; col < COLUMN_COUNT; col++)
-        {
+    for (int row = 0; row < ROW_COUNT; row++) {
+        for (int col = 0; col < COLUMN_COUNT; col++) {
+
             MineButton *randButton = new MineButton(":/assets/empty.png");
+            if (row == 0 && col == 0){
+                randButton->number = 3;
+            }
             gl->addWidget(randButton, row, col);
         }
     }

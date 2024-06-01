@@ -1,7 +1,8 @@
 #include "mygrid.h"
 #include "minebutton.h"
 
-MyGrid::MyGrid(QTimer *timer) : QGridLayout()
+MyGrid::MyGrid(QTimer *timer)
+    : QGridLayout()
 {
     this->timer = timer;
 }
