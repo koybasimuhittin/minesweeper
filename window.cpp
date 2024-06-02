@@ -41,6 +41,7 @@ void Window::showMainMenu()
 {
     game->clearGame();
     stackedWidget->setCurrentWidget(mainMenu);
+    mainMenu->audioOutput->setVolume(20);
 }
 
 
@@ -50,6 +51,7 @@ void Window::startEasyGame()
     game->setLevel(Easy);
     game->initializeGame();
     stackedWidget->setCurrentWidget(game);
+    mainMenu->audioOutput->setVolume(0);
 }
 
 void Window::startMediumGame()
@@ -58,6 +60,7 @@ void Window::startMediumGame()
     game->setLevel(Medium);
     game->initializeGame();
     stackedWidget->setCurrentWidget(game);
+    mainMenu->audioOutput->setVolume(0);
 }
 
 void Window::startHardGame()
@@ -66,6 +69,7 @@ void Window::startHardGame()
     game->setLevel(Hard);
     game->initializeGame();
     stackedWidget->setCurrentWidget(game);
+    mainMenu->audioOutput->setVolume(0);
 }
 
 

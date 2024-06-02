@@ -16,6 +16,7 @@
         <file>assets/wrong-flag.png</file>
         <file>background.gif</file>
         <file>sound.mp3</file>
+        <file>confetti.gif</file>
     </qresource>
     <qresource prefix="/sound">
         <file>mute.png</file>

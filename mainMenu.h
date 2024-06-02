@@ -18,6 +18,7 @@ public:
     QPushButton* getEasyButton() const;
     QPushButton* getMediumButton() const;
     QPushButton* getHardButton() const;
+    QAudioOutput *audioOutput;
 
 
 private:
@@ -30,7 +31,6 @@ private:
     QLabel *transparentLayer;
     QMovie *movie;
     QMediaPlayer *player;
-    QAudioOutput *audioOutput;
     void toggleSoundSlot();
     void quitGameSlot();
 

@@ -28,6 +28,7 @@ public:
     bool** mineMap;
     void initializeGame();
     void setGameStatus(GameStatus);
+    // QLabel *confettiLabel;
 
 private:
     QPushButton *button;
@@ -42,6 +43,10 @@ private:
     ScoreBoard *scoreBoard;
     QWidget *gameInfoWidget;
     void restart();
+    bool hintFound = false;
+    int hintX;
+    int hintY;
+    // QMovie *movie;
 
 protected:
     GameStatus gameStatus = Ongoing;
@@ -51,6 +56,7 @@ public slots:
     void revealButtons(int x, int y);
     void handleMineClicked(int x, int y);
     void handleScoreIncreased();
+    void findOrApplyHint();
 
 signals:
     void increaseTheScore();

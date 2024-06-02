@@ -6,6 +6,7 @@
 #include <QQueue>
 #include <QMessageBox>
 #include <scoreBoard.h>
+#include <QMovie>
 
 const double DENSITY = 0.1;
 int mineCount;
@@ -53,6 +54,7 @@ Game::Game(QWidget *parent) : QWidget(parent) {
     hintButton->setFixedWidth(60);
 
     QObject::connect(restartButton, &QPushButton::clicked, this, &Game::restart);
+    QObject::connect(hintButton, &QPushButton::clicked, this, &Game::findOrApplyHint);
 
 
 
@@ -72,6 +74,15 @@ Game::Game(QWidget *parent) : QWidget(parent) {
     button = new QPushButton("Go Main Menu", this);
     layout->addWidget(button);
 
+    // confettiLabel = new QLabel(this);
+    // movie = new QMovie(":/confetti.gif");  // Set the path to your GIF file
+    // confettiLabel->setMovie(movie);
+    // movie->start();
+    // confettiLabel->setFixedSize(1920, 1080);
+    // confettiLabel->setGeometry(-200, 0, 1920, 1080);
+
+    // confettiLabel->setScaledContents(true);
+    // confettiLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
     setLayout(layout);
 
@@ -150,6 +161,7 @@ void Game::handleMineClicked(int x, int y){
 }
 
 void Game::initializeGame(){
+    // confettiLabel->hide();
     setGameStatus(Ongoing);
     mineMap = new bool*[rowSize];
     for (int i = 0; i < colSize; ++i) {
@@ -220,7 +232,11 @@ void Game::initializeGame(){
 
 
 void Game::revealButtons(int x, int y) {
+    hintFound = false;
     if(gameStatus != Ongoing)return;
+    if(hintFound && x != hintX && y != hintY){
+        mineButtonVector[hintX][hintY]->set_icon(mineButtonVector[hintX][hintY]->emptyPath);
+    }
     QQueue<MineButton*> queue;
     MineButton* current;
     queue.enqueue(mineButtonVector[x][y]);
@@ -290,6 +306,106 @@ void Game::restart(){
     clearGame();
     clearTimeCounter();
     initializeGame();
+}
+
+void Game::findOrApplyHint(){
+    if(gameStatus != Ongoing)return;
+    if(hintFound){
+        revealButtons(hintX, hintY);
+        hintFound = false;
+        return;
+    }
+
+    hintFound = false;
+    bool** bombMap = new bool*[rowSize];
+    for (int i = 0; i < colSize; ++i) {
+        bombMap[i] = new bool[rowSize];
+        for (int j = 0; j < colSize; j++){
+            bombMap[i][j] = false;
+        }
+    }
+
+    bool anyBombFound = true;
+    while(anyBombFound){
+        anyBombFound = false;
+        for(int i = 0; i < rowSize; i++){
+            for(int j = 0; j < colSize; j++){
+                int emptyCellSum = 0;
+                for(int dx = -1; dx <= 1; dx++){
+                    for(int dy = -1; dy <= 1; dy++){
+                        if(dy == dx && dx == 0)continue;
+
+                        int row = i + dx;
+                        int col = j + dy;
+
+                        if(!isValid(row, col)) continue;
+
+                        if(!mineButtonVector[row][col]->isClicked || (!mineButtonVector[row][col]->isClicked && mineButtonVector[row][col]->number == 9) || (bombMap[row][col])){
+                            emptyCellSum += 1;
+                        }
+                    }
+                }
+                if(mineButtonVector[i][j]->number > 0 && mineButtonVector[i][j]->number < 9 && emptyCellSum == mineButtonVector[i][j]->number){
+                    for(int dx = -1; dx <= 1; dx++){
+                        for(int dy = -1; dy <= 1; dy++){
+                            if(dy == dx && dx == 0)continue;
+
+                            int row = i + dx;
+                            int col = j + dy;
+
+                            if(!isValid(row, col)) continue;
+
+                            if((!mineButtonVector[row][col]->isClicked) && !bombMap[row][col]){
+                                bombMap[row][col] = true;
+                                anyBombFound = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    for(int i = 0; i < rowSize; i++){
+        for(int j = 0; j < colSize; j++){
+            if(!mineButtonVector[i][j]->isClicked)continue;
+            int emptyCellSum = 0;
+            for(int dx = -1; dx <= 1; dx++){
+                for(int dy = -1; dy <= 1; dy++){
+                    if(dy == dx && dx == 0)continue;
+
+                    int row = i + dx;
+                    int col = j + dy;
+
+                    if(!isValid(row, col)) continue;
+
+                    if(bombMap[row][col]){
+                        emptyCellSum += 1;
+                    }
+                }
+            }
+            qDebug() << i << " " << j << " " << emptyCellSum;
+            if(mineButtonVector[i][j]->number > 0 && mineButtonVector[i][j]->number < 9 && emptyCellSum == mineButtonVector[i][j]->number){
+                for(int dx = -1; dx <= 1; dx++){
+                    for(int dy = -1; dy <= 1; dy++){
+                        if(dy == dx && dx == 0)continue;
+
+                        int row = i + dx;
+                        int col = j + dy;
+
+                        if(!isValid(row, col) || mineButtonVector[row][col]->isClicked) continue;
+
+                        if(!bombMap[row][col]){
+                            hintFound = true;
+                            hintX = row;
+                            hintY = col;
+                            mineButtonVector[row][col]->set_icon(mineButtonVector[row][col]->hintPath);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 QPushButton* Game::getButton() const
