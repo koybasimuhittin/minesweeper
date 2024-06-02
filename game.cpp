@@ -8,7 +8,8 @@
 #include "mineButton.h"
 #include <scoreBoard.h>
 
-const double DENSITY = 0.1;
+const double DENSITY = 0.1; // constant coefficient to calculate mine number
+
 int mineCount;
 
 Game::Game(QWidget *parent)
@@ -16,9 +17,9 @@ Game::Game(QWidget *parent)
 {
     std::srand(static_cast<unsigned int>(
         std::time(nullptr))); // Use current time as seed for random generator
-    msgBox->setStandardButtons(QMessageBox::Ok);
+    msgBox->setStandardButtons(QMessageBox::Ok); // initialize the messagebox with default ok button
 
-    // Set up the layout
+    // Set up the vertical layout
     QVBoxLayout *layout = new QVBoxLayout(this);
 
     // Create a QLabel for displaying the time
@@ -31,10 +32,11 @@ Game::Game(QWidget *parent)
     connect(timer, &QTimer::timeout, this, &Game::updateTime);
     timer->start(1000); // Update every 1000 ms (1 second)
 
-    // Add the time label to the layout and align it to the top right corner
+    // Add the time label to the layout and align it to the top right corner of the center
     layout->addWidget(timeLabel, 0, Qt::AlignTop | Qt::AlignRight);
     layout->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
+    // Create a game info widget which holds score, hint button and restart button
     gameInfoWidget = new QWidget();
     layout->addWidget(gameInfoWidget);
 
@@ -54,11 +56,13 @@ Game::Game(QWidget *parent)
     gameInfoLayout->addWidget(hintButton);
     hintButton->setFixedWidth(60);
 
+    // connect the restart button's clicked signal to the restart slot of the Game class
     QObject::connect(restartButton, &QPushButton::clicked, this, &Game::restart);
+    // connect the hint button's clicked signal to the findOrApply slot of the Game class
     QObject::connect(hintButton, &QPushButton::clicked, this, &Game::findOrApplyHint);
 
-    QWidget *mineWidget = new QWidget(); // this is our main widget
-    layout->addWidget(mineWidget);
+    QWidget *mineWidget = new QWidget(); // widget holding the game area
+    layout->addWidget(mineWidget); // add to the layout
 
     mineLayout = new QGridLayout(mineWidget);
 
@@ -98,13 +102,14 @@ void Game::updateTime()
         timeLabel->setText(timeText);
     }
 }
-
+// Clears the time counter for the next game
 void Game::clearTimeCounter()
 {
     timeCounter = 0;
     displayTime = true;
 }
 
+// Clears the game related informations for the next game
 void Game::clearGame()
 {
     scoreBoard->clearScore();
@@ -164,6 +169,7 @@ void Game::initializeGame()
 {
     // confettiLabel->hide();
     setGameStatus(Ongoing);
+    hintFound = false;
     mineMap = new bool *[rowSize];
     for (int i = 0; i < colSize; ++i) {
         mineMap[i] = new bool[rowSize];
