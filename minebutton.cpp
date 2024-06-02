@@ -4,7 +4,6 @@
 const int BUTTON_W = 30;
 const int BUTTON_H = 30;
 
-
 MineButton::MineButton(QWidget *parent)
     : QPushButton(parent)
 {
@@ -23,14 +22,13 @@ MineButton::MineButton(QWidget *parent)
     // setIconSize(QSize(BUTTON_W, BUTTON_H)); // Ensure the icon size matches the button size
     // setAutoFillBackground(true);
     connect(this, &QPushButton::clicked, this, &MineButton::startReveal);
-
-
 }
 
-
-void MineButton::mousePressEvent(QMouseEvent *event) {
+void MineButton::mousePressEvent(QMouseEvent *event)
+{
     if (event->button() == Qt::RightButton) {
-        if(!clickable) return;
+        if (!clickable)
+            return;
         update_flag();
     } else {
         // Otherwise, pass the event back to the base class
@@ -38,10 +36,11 @@ void MineButton::mousePressEvent(QMouseEvent *event) {
     }
 }
 
-
-void MineButton::reveal(){
-    if(isClicked) return;
-    if(number != 9){
+void MineButton::reveal()
+{
+    if (isClicked)
+        return;
+    if (number != 9) {
         emit scoreIncreased();
     }
     isClicked = true;
@@ -49,14 +48,14 @@ void MineButton::reveal(){
     set_icon(real_icon_path);
 }
 
-void MineButton::update_flag(){
-    if (!isClicked && clickable){
+void MineButton::update_flag()
+{
+    if (!isClicked && clickable) {
         QString iconPath;
-        if (!isFlagged){
+        if (!isFlagged) {
             iconPath = flagPath;
 
-        }
-        else{
+        } else {
             iconPath = emptyPath;
         }
         set_icon(iconPath);
@@ -64,9 +63,8 @@ void MineButton::update_flag(){
     }
 }
 
-
-
-void MineButton::set_icon(QString icon_path){
+void MineButton::set_icon(QString icon_path)
+{
     QPixmap pixmap(icon_path);
 
     // Scale the pixmap to the button size
@@ -82,19 +80,22 @@ void MineButton::set_icon(QString icon_path){
     update();
 }
 
-void MineButton::startReveal(){
-    if(isClicked && !clickable) return;
+void MineButton::startReveal()
+{
+    if (isClicked && !clickable)
+        return;
     emit(revealStarted(row, col));
-    if(number == 9){
-           emit(mineClicked(row, col));
+    if (number == 9) {
+        emit(mineClicked(row, col));
     }
 }
 
-void MineButton::setWrongFlagged(){
+void MineButton::setWrongFlagged()
+{
     set_icon(wrongFlagPath);
 }
 
-void MineButton::setClickable(bool state){
+void MineButton::setClickable(bool state)
+{
     clickable = state;
 }
-

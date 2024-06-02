@@ -3,9 +3,7 @@
 
 MyGrid::MyGrid()
     : QGridLayout()
-{
-
-}
+{}
 
 // void MyGrid::check_colors()
 // {

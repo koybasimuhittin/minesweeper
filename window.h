@@ -26,6 +26,4 @@ private:
     MainMenu *mainMenu;
 };
 
-
-
 #endif // WINDOW_H

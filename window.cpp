@@ -1,13 +1,10 @@
 #include "window.h"
 #include <QResizeEvent>
 
-
-
 Window::Window(QWidget *parent)
     : QMainWindow(parent)
 {
-
-    if(isFullScreen()) {
+    if (isFullScreen()) {
         this->setWindowState(Qt::WindowMaximized);
     } else {
         this->setWindowState(Qt::WindowFullScreen);
@@ -29,21 +26,16 @@ Window::Window(QWidget *parent)
     connect(mainMenu->getEasyButton(), &QPushButton::clicked, this, &Window::startEasyGame);
     connect(mainMenu->getMediumButton(), &QPushButton::clicked, this, &Window::startMediumGame);
     connect(mainMenu->getHardButton(), &QPushButton::clicked, this, &Window::startHardGame);
-
 }
 
-Window::~Window()
-{
-}
-
+Window::~Window() {}
 
 void Window::showMainMenu()
 {
     game->clearGame();
     stackedWidget->setCurrentWidget(mainMenu);
-    mainMenu->audioOutput->setVolume(20);
+    //mainMenu->audioOutput->setVolume(20);
 }
-
 
 void Window::startEasyGame()
 {
@@ -51,7 +43,7 @@ void Window::startEasyGame()
     game->setLevel(Easy);
     game->initializeGame();
     stackedWidget->setCurrentWidget(game);
-    mainMenu->audioOutput->setVolume(0);
+    //mainMenu->audioOutput->setVolume(0);
 }
 
 void Window::startMediumGame()
@@ -60,7 +52,7 @@ void Window::startMediumGame()
     game->setLevel(Medium);
     game->initializeGame();
     stackedWidget->setCurrentWidget(game);
-    mainMenu->audioOutput->setVolume(0);
+    //mainMenu->audioOutput->setVolume(0);
 }
 
 void Window::startHardGame()
@@ -69,7 +61,5 @@ void Window::startHardGame()
     game->setLevel(Hard);
     game->initializeGame();
     stackedWidget->setCurrentWidget(game);
-    mainMenu->audioOutput->setVolume(0);
+    //mainMenu->audioOutput->setVolume(0);
 }
-
-

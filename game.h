@@ -1,17 +1,17 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <QWidget>
+#include <QGridLayout>
+#include <QLabel>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QVBoxLayout>
-#include <QLabel>
-#include <QGridLayout>
+#include <QWidget>
 #include <mineButton.h>
-#include <QMessageBox>
 #include <scoreBoard.h>
 
-enum Level {Easy, Medium, Hard};
-enum GameStatus {Lose, Ongoing, Win};
+enum Level { Easy, Medium, Hard };
+enum GameStatus { Lose, Ongoing, Win };
 
 class Game : public QWidget
 {
@@ -19,13 +19,13 @@ class Game : public QWidget
 
 public:
     explicit Game(QWidget *parent = nullptr);
-    QPushButton* getButton() const;
+    QPushButton *getButton() const;
     void clearTimeCounter();
     void clearGame();
     void setLevel(Level l);
     int rowSize;
     int colSize;
-    bool** mineMap;
+    bool **mineMap;
     void initializeGame();
     void setGameStatus(GameStatus);
     // QLabel *confettiLabel;
@@ -38,7 +38,7 @@ private:
     bool displayTime = false;
     bool isValid(int x, int y);
     QGridLayout *mineLayout;
-    QVector<QVector<MineButton*>> mineButtonVector;
+    QVector<QVector<MineButton *>> mineButtonVector;
     QMessageBox *msgBox = new QMessageBox();
     ScoreBoard *scoreBoard;
     QWidget *gameInfoWidget;
@@ -60,9 +60,6 @@ public slots:
 
 signals:
     void increaseTheScore();
-
 };
-
-
 
 #endif // GAME_H

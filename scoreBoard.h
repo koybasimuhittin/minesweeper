@@ -23,5 +23,4 @@ public slots:
 private:
 };
 
-
 #endif // SCOREBOARD_H
