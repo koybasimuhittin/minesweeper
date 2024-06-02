@@ -67,7 +67,7 @@ MainMenu::MainMenu(QWidget *parent)
     // Set the main layout for the widget
     setLayout(mainLayout);
     // Set the source and volume for the player
-    player->setSource(QUrl::fromLocalFile("/Users/muhittinkoybasi/Desktop/minesweeper/sound.mp3"));
+    player->setSource(QUrl("qrc:/sound.mp3"));
     audioOutput->setVolume(10);
     player->play();
 
