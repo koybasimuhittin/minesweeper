@@ -11,17 +11,15 @@ class ScoreCounter : public QObject
 
 public:
     explicit ScoreCounter(QObject *parent = nullptr);
+    static int m_score;
 
     int getScore() const;
 
 public slots:
-    void increaseScore();
-
-signals:
-    void scoreChanged(int newScore);
+    static void increaseScore();
 
 private:
-    int m_score;
 };
+
 
 #endif // SCORECOUNTER_H

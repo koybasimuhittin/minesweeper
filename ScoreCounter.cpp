@@ -1,19 +1,21 @@
 // ScoreCounter.cpp
 
 #include "scorecounter.h"
+int ScoreCounter::m_score = 0;
+
 
 ScoreCounter::ScoreCounter(QObject *parent)
-    : QObject(parent), m_score(0)
+    : QObject(parent)
 {
+
 }
 
 int ScoreCounter::getScore() const {
+
     return m_score;
 }
 
 
 void ScoreCounter::increaseScore() {
-    m_score ++;
-    emit scoreChanged(m_score);
-
+    m_score++;
 }
