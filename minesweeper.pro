@@ -1,15 +1,21 @@
-QT += core gui widgets
+QT += core gui widgets multimedia
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 SOURCES += \
-    MineButton.cpp \
-    MyGrid.cpp \
-    ScoreCounter.cpp \
-    main.cpp
+    mainMenu.cpp \
+    mineButton.cpp \
+    game.cpp \
+    main.cpp \
+    scoreBoard.cpp \
+    window.cpp
 
 HEADERS += \
-    minebutton.h \
-    mygrid.h \
-    scorecounter.h
+    game.h \
+    mainMenu.h \
+    mineButton.h \
+    scoreBoard.h \
+    window.h
 
 RESOURCES += \
     assets.qrc

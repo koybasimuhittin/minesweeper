@@ -11,7 +11,6 @@ class MyGrid : public QGridLayout
 
 public:
     MyGrid();
-    QTimer *timer;
 
 public slots:
     // void check_colors();

@@ -14,9 +14,6 @@ class MineButton : public QPushButton
 
 
 public:
-    static QVector<MineButton*> mineButtonMap[30];  // Declare a static array of QVector<MineButton*>
-    static int ROW_COUNT;
-    static int COL_COUNT;
     MineButton(QWidget *parent = 0);
     int number;
     QStringList iconPaths = {
@@ -40,18 +37,26 @@ public:
     bool isFlagged = false;
     int row;
     int col;
+    void setWrongFlagged();
+    void setClickable(bool);
+
+private:
+    void startReveal();
+
 protected:
     void mousePressEvent(QMouseEvent *event) override;
+    bool clickable = true;
 
 
 signals:
-    void scoreChanged(int);
+    void revealStarted(int x, int y);
+    void mineClicked(int x, int y);
+    void scoreIncreased();
 
 
 public slots:
-    void empty_bfs();
     void update_flag();
-    void reveal_button();
+    void reveal();
     void set_icon(QString);
 };
 
