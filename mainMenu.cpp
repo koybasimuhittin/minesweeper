@@ -22,7 +22,7 @@ MainMenu::MainMenu(QWidget *parent)
     // transparentLayer->setStyleSheet(
     //     "background-color: rgba(0, 0, 0, 220);"); // Set black background with 50% opacity
 
-    // Set up button
+    // Set up the level buttons and quit button
     easyButton = new QPushButton("Easy (10x10)", this);
     easyButton->setFixedSize(200, 50); // Set button size
     easyButton->setStyleSheet("background-color: gray;");

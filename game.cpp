@@ -170,16 +170,23 @@ void Game::handleMineClicked(int x, int y)
                 }
             }
         }
+
+        // alert the message box with lose information
         msgBox->setText("You lose!");
         msgBox->exec();
     }
 }
 
+// initialize the game board
 void Game::initializeGame()
 {
-    // confettiLabel->hide();
+    // set the game status ongoing
     setGameStatus(Ongoing);
+
+    // clear hintFound
     hintFound = false;
+
+    // initialize mapLocations with using random function
     mineMap = new bool *[rowSize];
     for (int i = 0; i < colSize; ++i) {
         mineMap[i] = new bool[rowSize];
@@ -200,6 +207,7 @@ void Game::initializeGame()
         mineMap[randomRow][randomColumn] = true;
     }
 
+
     mineButtonVector.resize(rowSize); // Resize the outer vector to rowSize
 
     for (int i = 0; i < rowSize; ++i) {
@@ -208,6 +216,8 @@ void Game::initializeGame()
 
     for (int row = 0; row < rowSize; row++) {
         for (int col = 0; col < colSize; col++) {
+
+            // create mine button object
             MineButton *randButton = new MineButton();
             randButton->row = row;
             randButton->col = col;
@@ -227,6 +237,7 @@ void Game::initializeGame()
 
                         // Check if the new indices are within the bounds of the array
                         if (isValid(newRow, newCol)) {
+                            // find the neighbour mine count
                             sum += mineMap[newRow][newCol];
                         }
                     }
@@ -234,6 +245,8 @@ void Game::initializeGame()
 
                 randButton->number = sum;
             }
+
+            // connect the neccesary signals
             QObject::connect(randButton,
                              &MineButton::scoreIncreased,
                              this,
@@ -249,12 +262,15 @@ void Game::initializeGame()
 
 void Game::revealButtons(int x, int y)
 {
+    // hint should be cleared if any buttons are revealing
     hintFound = false;
+
+    // if the game ended do not continue to revealing
     if (gameStatus != Ongoing)
         return;
-    if (hintFound && x != hintX && y != hintY) {
-        mineButtonVector[hintX][hintY]->set_icon(mineButtonVector[hintX][hintY]->emptyPath);
-    }
+
+
+    // bfs to reach all empty cells one their neighbours which are only one cell away
     QQueue<MineButton *> queue;
     MineButton *current;
     queue.enqueue(mineButtonVector[x][y]);
@@ -292,33 +308,44 @@ void Game::revealButtons(int x, int y)
         }
     }
 
+    // check if the game ends
     int score = scoreBoard->getScore();
     if (score == rowSize * colSize - mineCount && gameStatus == Ongoing) {
+
+        // set the status and stop the timer
         setGameStatus(Win);
         displayTime = false;
+
         for (int i = 0; i < rowSize; i++) {
             for (int j = 0; j < colSize; j++) {
                 mineButtonVector[i][j]->setClickable(false);
+
+                // display flag for each mine (see: https://minesweeper.online/game/3417713902 the last 2 second should be enough)
                 if (mineButtonVector[i][j]->number == 9) {
                     mineButtonVector[i][j]->set_icon(mineButtonVector[i][j]->flagPath);
                 }
             }
         }
+
+        // alert the win text
         msgBox->setText("You won!");
         msgBox->exec();
     }
 }
 
+// setter function for game status
 void Game::setGameStatus(GameStatus g)
 {
     gameStatus = g;
 }
 
+// bearer signal which carries the actual signal coming from mineButton through the scoreboard
 void Game::handleScoreIncreased()
 {
     emit increaseTheScore();
 }
 
+// restart function to clear the board and set ready for the next game
 void Game::restart()
 {
     clearGame();
@@ -326,10 +353,14 @@ void Game::restart()
     initializeGame();
 }
 
+// function to find hint or if there is a hint found last click reveals the hint
 void Game::findOrApplyHint()
 {
+    // if the game is not ongoing do not continue
     if (gameStatus != Ongoing)
         return;
+
+    // if there is already a hint reveal the coordinats
     if (hintFound) {
         revealButtons(hintX, hintY);
         hintFound = false;
@@ -337,6 +368,14 @@ void Game::findOrApplyHint()
     }
 
     hintFound = false;
+    // idea:
+    // go through each revealed cell and check its neighbours
+    // if unrevealed neighbours equals to the cell's number marks each unrevealed cells as bomb
+    // repeats this proces untill there is no new bomb mark
+
+    //check every cell if unrevealed neighbours count > cell's number and cell's number is equal
+    //to neighbour bomb marks count at least one of the non marked cell is free to click
+
     bool **bombMap = new bool *[rowSize];
     for (int i = 0; i < colSize; ++i) {
         bombMap[i] = new bool[rowSize];

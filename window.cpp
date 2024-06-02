@@ -10,18 +10,20 @@ Window::Window(QWidget *parent)
         this->setWindowState(Qt::WindowFullScreen);
     }
 
+    // set minimum size for the screen
     setMinimumSize(QSize(720, 720));
 
+    // use stackedWidget for navigate around diffrent pages mainPage and gamePage
     stackedWidget = new QStackedWidget(this);
     game = new Game(this);
     mainMenu = new MainMenu(this);
 
     stackedWidget->addWidget(mainMenu);
-    stackedWidget->addWidget(game);
+    stackedWidget->addWidget(game); // put the mainMenu later to start with main menu
 
     setCentralWidget(stackedWidget);
 
-    // Connect buttons
+    // Connect signals and slots to start a game or going back to home page
     connect(game->getButton(), &QPushButton::clicked, this, &Window::showMainMenu);
     connect(mainMenu->getEasyButton(), &QPushButton::clicked, this, &Window::startEasyGame);
     connect(mainMenu->getMediumButton(), &QPushButton::clicked, this, &Window::startMediumGame);
