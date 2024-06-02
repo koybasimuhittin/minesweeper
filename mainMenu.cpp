@@ -46,6 +46,7 @@ MainMenu::MainMenu(QWidget *parent)
     player = new QMediaPlayer;
     audioOutput = new QAudioOutput;
     player->setAudioOutput(audioOutput);
+    player->setLoops(-1);
 
     // Create a layout for the buttons
     QVBoxLayout *buttonLayout = new QVBoxLayout;
