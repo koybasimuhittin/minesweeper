@@ -115,6 +115,7 @@ void Game::clearGame()
     scoreBoard->clearScore();
     displayTime = false;
     timeLabel->setText("00:00:00");
+
     while (mineLayout->count()) {
         QWidget *widget = mineLayout->itemAt(0)->widget();
         if (widget) {
@@ -124,6 +125,7 @@ void Game::clearGame()
     }
 }
 
+// set the current level of the game and calculates the mine count according to level
 void Game::setLevel(Level l)
 {
     level = l;
@@ -138,6 +140,7 @@ void Game::setLevel(Level l)
     mineCount = rowSize * colSize * DENSITY;
 }
 
+// checks if the coordinates are outside of the game area or not
 bool Game::isValid(int x, int y)
 {
     return (x >= 0 && x < rowSize && y >= 0 && y < colSize);
@@ -145,11 +148,18 @@ bool Game::isValid(int x, int y)
 
 void Game::handleMineClicked(int x, int y)
 {
+    // if game is finished there aren no click to the buttons
     if (gameStatus != Ongoing)
         return;
+
+    // if mine really clicked
     if (mineButtonVector[x][y]->number == 9) {
+
+        // set the game status lose and stop the timer
         setGameStatus(Lose);
-        displayTime = false;
+        displayTime = false; // still continues displaying just stops counting
+
+        // reveal the other mines
         for (int i = 0; i < rowSize; i++) {
             for (int j = 0; j < colSize; j++) {
                 mineButtonVector[i][j]->setClickable(false);
@@ -290,7 +300,7 @@ void Game::revealButtons(int x, int y)
             for (int j = 0; j < colSize; j++) {
                 mineButtonVector[i][j]->setClickable(false);
                 if (mineButtonVector[i][j]->number == 9) {
-                    mineButtonVector[i][j]->reveal();
+                    mineButtonVector[i][j]->set_icon(mineButtonVector[i][j]->flagPath);
                 }
             }
         }
